@@ -45,10 +45,10 @@ class BaseModel:
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-		"""Updates updated_at with current time when instance is changed"""
-		self.updated_at = datetime.now()
-		storage.new(self)
-		storage.save()
+        """Updates updated_at with current time when instance is changed"""
+        self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
