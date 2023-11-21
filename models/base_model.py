@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
-import datetime
+# import datetime
+from datetime import datetime
 from models import storage
 
 
@@ -13,16 +14,16 @@ class BaseModel:
                 if key == "__class__":
                     continue
                 if key == "created_at" or key == "updated_at":
-                    value = datetime.datetime.\
+                    value =datetime.\
                         strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 setattr(self, key, value)
 
         if "id" not in kwargs.keys():
             self.id = str(uuid.uuid4())
         if "created_at" not in kwargs.keys():
-            self.created_at = datetime.datetime.now()
+            self.created_at = datetime.now()
         if "updated_at" not in kwargs.keys():
-            self.updated_at = datetime.datetime.now()
+            self.updated_at = datetime.now()
         storage.new(self)
 
     def __str__(self):
