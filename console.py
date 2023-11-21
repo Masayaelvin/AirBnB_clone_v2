@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import shlex
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -113,15 +114,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+                    
+
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+
+        args = args.split()
+
+        if len(args) == 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        elif len(args) > 0:
+            new_data= {}
+            for i in range(1, len(args)):
+                    if "="  in args[i]:
+                        key, value = args[i].split("=")
+                        value = value.replace('_', " ")
+                        if type(value) == str and value[0] == '"' and value[-1] == '"':
+                            value = value[1:-1]
+                        elif "." in value:
+                            try:
+                                float(value)
+                            except Exception:
+                                pass
+                        else:
+                            try:
+                                int(value)
+                            except Exception:
+                                pass
+
+                    new_data[key] = value
+            new_instance = HBNBCommand.classes[args[0]](**new_data)
+        else:
+            new_instance = HBNBCommand.classes[args[0]]()
         storage.save()
         print(new_instance.id)
         storage.save()
