@@ -41,12 +41,12 @@ class FileStorage:
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Saves storage dictionary to file"""
+        """serializes __objects to the JSON file (path: __file_path)
+        """
+        temp = {}
+        for key, val in self.__objects.items():
+            temp[key] = val.to_dict()
         with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
             json.dump(temp, f)
     
     def delete(self, obj=None):
